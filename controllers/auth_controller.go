@@ -76,3 +76,8 @@ func (authController AuthController) GoogleOAuth(ctx *gin.Context) {
 
 	ctx.Redirect(http.StatusTemporaryRedirect, fmt.Sprint("http://localhost:3000", pathUrl))
 }
+
+func (authController AuthController) LogoutUser(ctx *gin.Context) {
+	ctx.SetCookie("token", "", -1, "/", "localhost", false, true)
+	ctx.JSON(http.StatusOK, gin.H{"status": "success"})
+}

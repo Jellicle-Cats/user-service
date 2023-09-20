@@ -35,6 +35,7 @@ func StartServer() {
 	router.GET("/healthchecker", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"status": "success", "message": "Implement Google OAuth2 in Golang"})
 	})
+	router.GET("/auth/logout", authController.LogoutUser)
 	router.GET("/sessions/oauth/google", authController.GoogleOAuth)
 	router.GET("/users/me", middleware.DeserializeUser(userService), userController.GetMe)
 	server.Run(":8000")
