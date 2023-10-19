@@ -8,6 +8,7 @@ import (
 
 type User struct {
 	ID        primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	UserId    int64              `json:"userId,omitempty" bson:"userId,omitempty"`
 	Name      string             `json:"name,omitempty" bson:"name,omitempty"`
 	Email     string             `json:"email,omitempty" bson:"email,omitempty"`
 	Role      string             `json:"role,omitempty" bson:"role,omitempty"`
@@ -19,6 +20,7 @@ type User struct {
 
 type DBResponse struct {
 	ID        primitive.ObjectID `json:"id" bson:"_id"`
+	UserId    int64              `json:"userId,omitempty" bson:"userId,omitempty"`
 	Name      string             `json:"name" bson:"name"`
 	Email     string             `json:"email" bson:"email"`
 	Provider  string             `json:"provider" bson:"provider"`
@@ -30,6 +32,7 @@ type DBResponse struct {
 
 type UserResponse struct {
 	ID        primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	UserId    int64              `json:"userId,omitempty" bson:"userId,omitempty"`
 	Name      string             `json:"name,omitempty" bson:"name,omitempty"`
 	Email     string             `json:"email,omitempty" bson:"email,omitempty"`
 	Role      string             `json:"role,omitempty" bson:"role,omitempty"`
@@ -42,6 +45,7 @@ type UserResponse struct {
 func FilteredResponse(user *DBResponse) UserResponse {
 	return UserResponse{
 		ID:        user.ID,
+		UserId:    user.UserId,
 		Email:     user.Email,
 		Name:      user.Name,
 		Role:      user.Role,
