@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/Jellicle-Cats/user-service/models"
 	"github.com/Jellicle-Cats/user-service/utils"
@@ -66,7 +67,7 @@ func (userService UserService) UpsertUser(email string, data *models.User) (*mod
 
 	opts := options.FindOneAndUpdate().SetUpsert(true).SetReturnDocument(1)
 	query := bson.D{{Key: "email", Value: email}}
-	update := bson.D{{Key: "$set", Value: doc}}
+	update := bson.D{{Key: "$set", Value: doc}, {Key: "$setOnInsert", Value: bson.D{{Key: "created_at", Value: time.Now()}}}}
 	res := userService.Collection.FindOneAndUpdate(userService.Ctx, query, update, opts)
 
 	var updatedPost *models.DBResponse
