@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Jellicle-Cats/user-service/models"
+	"github.com/Jellicle-Cats/user-service/proto"
 	"github.com/Jellicle-Cats/user-service/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -14,14 +15,16 @@ import (
 )
 
 type UserService struct {
-	Collection *mongo.Collection
-	Ctx        context.Context
+	Collection    *mongo.Collection
+	Ctx           context.Context
+	BookingClient proto.BookingServiceClient
 }
 
-func NewUserService(collection *mongo.Collection, ctx context.Context) *UserService {
+func NewUserService(collection *mongo.Collection, ctx context.Context, bookingClient proto.BookingServiceClient) *UserService {
 	return &UserService{
-		Collection: collection,
-		Ctx:        ctx,
+		Collection:    collection,
+		Ctx:           ctx,
+		BookingClient: bookingClient,
 	}
 }
 
@@ -77,4 +80,13 @@ func (userService UserService) UpsertUser(email string, data *models.User) (*mod
 	}
 
 	return updatedPost, nil
+}
+
+func (userService UserService) RequestUserHistory(userId int64) (*proto.BookingList, error) {
+	req := &proto.UserId{UserId: userId}
+	bookingList, err := userService.BookingClient.GetUserHistory(userService.Ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return bookingList, err
 }
