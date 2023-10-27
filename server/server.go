@@ -51,5 +51,5 @@ func StartServer() {
 	router.GET("/sessions/oauth/google", authController.GoogleOAuth)
 	router.GET("/users/me", middleware.DeserializeUser(userService), userController.GetMe)
 	router.GET("/users/bookinglist", userController.GetUserHistory)
-	server.Run(":8000")
+	server.Run(":8080")
 }
