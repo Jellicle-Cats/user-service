@@ -70,7 +70,7 @@ func (userService UserService) UpsertUser(email string, data *models.User) (*mod
 
 	opts := options.FindOneAndUpdate().SetUpsert(true).SetReturnDocument(1)
 	query := bson.D{{Key: "email", Value: email}}
-	update := bson.D{{Key: "$set", Value: doc}, {Key: "$setOnInsert", Value: bson.D{{Key: "created_at", Value: time.Now()}}}}
+	update := bson.D{{Key: "$set", Value: doc}, {Key: "$setOnInsert", Value: bson.D{{Key: "created_at", Value: time.Now()}, {Key: "role", Value: "user"}}}}
 	res := userService.Collection.FindOneAndUpdate(userService.Ctx, query, update, opts)
 
 	var updatedPost *models.DBResponse

@@ -53,7 +53,6 @@ func (authController AuthController) GoogleOAuth(ctx *gin.Context) {
 		Email:     googleUser.Email,
 		Photo:     googleUser.Picture,
 		Provider:  "Google",
-		Role:      "user",
 		UpdatedAt: time.Now(),
 	}
 	updatedUser, err := authController.UserService.UpsertUser(googleUser.Email, userData)
