@@ -1,10 +1,8 @@
 package config
 
 import (
-	"fmt"
+	"os"
 	"time"
-
-	"github.com/spf13/viper"
 )
 
 type Config struct {
@@ -18,20 +16,13 @@ type Config struct {
 }
 
 func ReadConfig() Config {
-	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
-	viper.SetConfigType("env")
-
-	err := viper.ReadInConfig()
-
-	if err != nil {
-		panic(fmt.Errorf("[Config] Cannot read config file, %s", err))
+	return Config{
+		MongoURL:       os.Getenv("MONGO_URL"),
+		JWTTokenSecret: os.Getenv("JWT_SECRET"),
+		ClientID:       os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
+		ClientSecret:   os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
+		RedirectURL:    os.Getenv("REDIRECT_URL"),
+		TokenExpiresIn: 1 * time.Hour,
+		TokenMaxAge:    60,
 	}
-	var config Config
-	err = viper.Unmarshal(&config)
-	if err != nil {
-		panic(fmt.Errorf("[Config] Unable to decode into struct, %s", err))
-	}
-
-	return config
 }
